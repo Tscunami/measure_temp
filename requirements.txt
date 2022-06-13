@@ -1,0 +1,1 @@
+SQLAlchemy==1.4.37; platform_system != "linux"  # Preinstalled on my Raspberry Pi due to slow installation
