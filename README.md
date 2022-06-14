@@ -19,7 +19,14 @@ This will run every 10 minutes
 ``*/10 * * * * ~/scripts/measure_temp/script.sh``  
 
 ## Additional scripts 
+
 ### motd.py
 This script is called everytime, when any user ssh to Raspberry  
 This script can be added to the folder **/etc/update-motd.d**  
 
+#### Example file in /etc/update-motd.d
+```shell
+#!/bin/sh
+cd /home/user/scripts/measure_temp
+python motd.py
+```
