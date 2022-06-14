@@ -2,18 +2,26 @@
 
 import datetime
 import sqlite3
+import sys
 
 if __name__ == "__main__":
 
-    today = str(datetime.datetime.now())
+    # Get today's datetime at 0:00:00
+    today_datetime = datetime.datetime.now()
+    today_datetime = today_datetime.replace(hour=0, minute=0, second=0, microsecond=0)
+    today = str(today_datetime)
 
     # connect to db
-    con = sqlite3.connect("temperatures.db")
-    cur = con.cursor()
+    try:
+        con = sqlite3.connect("temperatures.db")
+        cur = con.cursor()
+    except Exception as err:
+        print("Unable to connect to db for temperature.")
+        sys.exit(0)
 
     # get min, max temp from today
     try:
-        cur.execute("select max(temperature), created_at from temperatures;")
+        cur.execute(f"select max(temperature), created_at from temperatures where created_at>'{today}';")
         max_temp, max_date = cur.fetchone()
         max_time = max_date.split(" ")[1]
         max_time = max_time.split(".")[0]
@@ -21,7 +29,7 @@ if __name__ == "__main__":
         max_time, max_temp = "", "    "
 
     try:
-        cur.execute("select min(temperature), created_at from temperatures;")
+        cur.execute(f"select min(temperature), created_at from temperatures where created_at>'{today}';")
         min_temp, min_date = cur.fetchone()
         min_time = min_date.split(" ")[1]
         min_time = min_time.split(".")[0]
