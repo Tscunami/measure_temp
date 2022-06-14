@@ -6,7 +6,7 @@ from sqlalchemy import Column, Integer, String, DateTime
 from sqlalchemy.ext.declarative import declarative_base
 
 
-engine = sqlalchemy.create_engine('sqlite:///temperatures.db', future=True, echo=True)
+engine = sqlalchemy.create_engine('sqlite:///temperatures.db', future=True)
 
 Base = declarative_base()
 
