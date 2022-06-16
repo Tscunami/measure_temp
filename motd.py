@@ -4,6 +4,8 @@ import datetime
 import sqlite3
 import sys
 
+from run import get_temperature
+
 if __name__ == "__main__":
 
     # Get today's datetime at 0:00:00
@@ -19,7 +21,7 @@ if __name__ == "__main__":
         print("Unable to connect to db for temperature.")
         sys.exit(0)
 
-    # get min, max temp from today
+    # Get max temperature from today
     try:
         cur.execute(f"select max(temperature), created_at from temperatures where created_at>'{today}';")
         max_temp, max_date = cur.fetchone()
@@ -28,6 +30,7 @@ if __name__ == "__main__":
     except Exception as err:
         max_time, max_temp = "", "    "
 
+    # Get min temperature from today
     try:
         cur.execute(f"select min(temperature), created_at from temperatures where created_at>'{today}';")
         min_temp, min_date = cur.fetchone()
@@ -36,8 +39,12 @@ if __name__ == "__main__":
     except Exception as err:
         min_time, min_temp = "", "    "
 
+    # Get current temperature
+    current_temperature = get_temperature()
+
     print(30 * "-")
     print("Today:")
     print(f"Max: {max_temp}°C   Time: {max_time}")
     print(f"Min: {min_temp}°C   Time: {min_time}")
+    print(f"Now: {current_temperature}°C")
     print(30 * "-")
