@@ -1,11 +1,12 @@
 """Script for measuring temperature of Raspberry PI and save to sqlite db"""
+
 import datetime
 import os
 import re
 
 from sqlalchemy.orm import Session
 
-from db import engine, meta_data
+from db_sqlalchemy import engine, meta_data
 
 
 T_TEMPERATURES = meta_data.tables["temperatures"]

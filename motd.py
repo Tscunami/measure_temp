@@ -2,44 +2,74 @@
 
 import datetime
 import sqlite3
-import sys
+from typing import Tuple
 
-from run import get_temperature
+from save_current_temp import get_temperature
+from db_sqlite3 import connect_to_db
 
-if __name__ == "__main__":
 
-    # Get today's datetime at 0:00:00
-    today_datetime = datetime.datetime.now()
-    today_datetime = today_datetime.replace(hour=0, minute=0, second=0, microsecond=0)
-    today = str(today_datetime)
+def get_max_temperature(cur: sqlite3.Cursor) -> Tuple[str, str]:
+    """
+    Find max temperature from today and returns its value and time
+    :param cur: sqlite3.Cursor
+    :return Tuple[str, str]
+    """
 
-    # connect to db
-    try:
-        con = sqlite3.connect("temperatures.db")
-        cur = con.cursor()
-    except Exception as err:
-        print("Unable to connect to db for temperature.")
-        sys.exit(0)
+    today = get_today_date()
 
     # Get max temperature from today
     try:
-        cur.execute(f"select max(temperature), created_at from temperatures where created_at>'{today}';")
-        max_temp, max_date = cur.fetchone()
-        max_time = max_date.split(" ")[1]
-        max_time = max_time.split(".")[0]
-    except Exception as err:
-        max_time, max_temp = "", "    "
+        cur.execute(f"SELECT MAX(temperature), created_at FROM temperatures WHERE created_at>'{today}';")
+        temp, date = cur.fetchone()
+        t_time = date.split(" ")[1]
+        t_time = t_time.split(".")[0]
+    except Exception:
+        t_time, temp = "", "    "
+
+    return temp, t_time
+
+
+def get_min_temperature(cur: sqlite3.Cursor) -> Tuple[str, str]:
+    """
+    Find min temperature from today and returns its value and time
+    :param cur: sqlite3.Cursor
+    :return Tuple[str, str]
+    """
+
+    today = get_today_date()
 
     # Get min temperature from today
     try:
-        cur.execute(f"select min(temperature), created_at from temperatures where created_at>'{today}';")
-        min_temp, min_date = cur.fetchone()
-        min_time = min_date.split(" ")[1]
-        min_time = min_time.split(".")[0]
-    except Exception as err:
-        min_time, min_temp = "", "    "
+        cur.execute(f"SELECT MIN(temperature), created_at FROM temperatures WHERE created_at>'{today}';")
+        temp, date = cur.fetchone()
+        t_time = date.split(" ")[1]
+        t_time = t_time.split(".")[0]
+    except Exception:
+        t_time, temp = "", "    "
 
-    # Get current temperature
+    return temp, t_time
+
+
+def get_today_date() -> str:
+    """
+    Gets today date at time 0:00:00.0
+    :return str
+    """
+
+    today_datetime = datetime.datetime.now()
+    today_datetime = today_datetime.replace(hour=0, minute=0, second=0, microsecond=0)
+    return str(today_datetime)
+
+
+def show_temperatures() -> None:
+    """Prints today max, min and current temperatures with time"""
+
+    # Connect to db
+    connection, cursor = connect_to_db()
+
+    # Get temperatures
+    max_temp, max_time = get_max_temperature(cursor)
+    min_temp, min_time = get_min_temperature(cursor)
     current_temperature = get_temperature()
 
     print(30 * "-")
@@ -48,3 +78,7 @@ if __name__ == "__main__":
     print(f"Min: {min_temp}°C   Time: {min_time}")
     print(f"Now: {current_temperature}°C")
     print(30 * "-")
+
+
+if __name__ == "__main__":
+    show_temperatures()

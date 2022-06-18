@@ -5,8 +5,9 @@ from sqlalchemy import MetaData
 from sqlalchemy import Column, Integer, String, DateTime
 from sqlalchemy.ext.declarative import declarative_base
 
+DB_NAME = "temperatures.db"
 
-engine = sqlalchemy.create_engine('sqlite:///temperatures.db', future=True)
+engine = sqlalchemy.create_engine(f'sqlite:///{DB_NAME}', future=True)
 
 Base = declarative_base()
 
