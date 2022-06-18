@@ -5,9 +5,7 @@ These scripts are for monitoring temperature on my Raspberry Pi 4.
 I use SQLite db for storing information about temperature and current time.  
 
 ## Information before setting up
-I installed sqlalchemy in my root python and use it across all projects.
-If you want to install sqlalchemy in your venv, remove platform condition in requirements.txt.  
-Next thing, if you don't have already, is to install sqlite3 on your system with:  
+You should install sqlite3 on your system, if you don't already have with this command:   
 ```sudo apt install sqlite3```
 
 ## Description of individual scripts
