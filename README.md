@@ -1,13 +1,13 @@
 # Measure temperature
 
 ## Description
-These scripts are for my Raspberry Pi 4.  
-I use SQLite db for storing information about temperature at given time.  
+These scripts are for monitoring temperature on my Raspberry Pi 4.
+I use SQLite db for storing information about temperature and current time.  
 
 ## Information before setting up
 I installed sqlalchemy in my root python and use it across all projects.
-If you want to install sqlalchemy in your venv, you have to remove condition in requirements.txt.  
-Next thing you have to install sqlite3 at your system with:  
+If you want to install sqlalchemy in your venv, remove platform condition in requirements.txt.  
+Next thing, if you don't have already, is to install sqlite3 on your system with:  
 ```sudo apt install sqlite3```
 
 ## Description of individual scripts
@@ -15,7 +15,7 @@ Next thing you have to install sqlite3 at your system with:
 ### save_current_temp.py
 This script is for storing current temperature at given time.  
 I scheduled it to run every 10 minutes with crontab.
-Script called with crontab example:  
+Example script called with crontab:  
 ```bash
 #!/bin/bash
 cd /home/user/scripts/measure_temp
@@ -27,9 +27,9 @@ Cronjob example:
 ``*/10 * * * * ~/scripts/cron_scripts/save_current_temp.sh``  
 
 ### del_old_temps.py
-This script is for deleting old data from db.
-Currently, it is set up to delete all records older than 3 days.
-Script called with crontab example:
+This script is for deleting old data from db.  
+Currently, it is set up to delete all records older than 3 days.  
+Example script called with crontab:
 ```bash
 #!/bin/bash
 cd /home/user/scripts/measure_temp
