@@ -72,12 +72,13 @@ def show_temperatures() -> None:
     min_temp, min_time = get_min_temperature(cursor)
     current_temperature = get_temperature()
 
+    print("")
+    print("Today temperatures:")
     print(30 * "-")
-    print("Today:")
     print(f"Max: {max_temp}°C   Time: {max_time}")
     print(f"Min: {min_temp}°C   Time: {min_time}")
     print(f"Now: {current_temperature}°C")
-    print(30 * "-")
+    print("")
 
 
 if __name__ == "__main__":
